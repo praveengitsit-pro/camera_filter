@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="40084368-5296-4038-80a1-8b67f02e48b9" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
-    </list>
+    <list default="true" id="40084368-5296-4038-80a1-8b67f02e48b9" name="Changes" comment="Downgraded vector_math" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -55,6 +52,14 @@
       <option name="presentableId" value="Default" />
       <updated>1692253735011</updated>
     </task>
+    <task id="LOCAL-00001" summary="Downgraded vector_math">
+      <created>1692260412548</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1692260412548</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -67,5 +72,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Downgraded vector_math" />
+    <option name="LAST_COMMIT_MESSAGE" value="Downgraded vector_math" />
   </component>
 </project>
