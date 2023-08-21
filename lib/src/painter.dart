@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:camera_filters/src/draw_image.dart';
 import 'package:camera_filters/src/transformer.dart';
@@ -16,6 +17,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'widgets/_range_slider.dart';
 import 'widgets/_text_dialog.dart';
+import 'package:flutter/foundation.dart' as foundation;
 
 ///[ImagePainter] widget.
 ///this widget could call on any image
@@ -38,6 +40,7 @@ class ImagePainter extends StatefulWidget {
       this.isScalable,
       this.brushIcon,
       this.clearAllIcon,
+      this.emojiIcon,
       this.colorIcon,
       this.undoIcon,
       this.isSignature = false,
@@ -422,6 +425,9 @@ class ImagePainter extends StatefulWidget {
 
   ///Widget for clearing all actions on control bar.
   final Widget? clearAllIcon;
+
+  ///Widget for emoji icon
+  final Widget? emojiIcon;
 
   ///Initial PaintMode.
   final PaintMode? initialPaintMode;
@@ -959,6 +965,61 @@ class ImagePainterState extends State<ImagePainter> {
     });
   }
 
+  void _openEmojiBottomSheet() {
+    _controller.value = _controller.value.copyWith(mode: PaintMode.text);
+
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return EmojiPicker(
+            onEmojiSelected: (Category? category, Emoji emoji) {
+              setState(() {
+                _addPaintHistory(
+                  PaintInfo(
+                      mode: PaintMode.text,
+                      text: emoji.emoji,
+                      painter: _painter,
+                      offset: []),
+                );
+              });
+              _textController.clear();
+              Navigator.pop(context);
+            },
+            config: Config(
+              columns: 7,
+              emojiSizeMax: 32 *
+                  (foundation.defaultTargetPlatform == TargetPlatform.iOS
+                      ? 1.30
+                      : 1.0), // Issue: https://github.com/flutter/flutter/issues/28894
+              verticalSpacing: 0,
+              horizontalSpacing: 0,
+              gridPadding: EdgeInsets.zero,
+              initCategory: Category.RECENT,
+              bgColor: Color(0xFFF2F2F2),
+              indicatorColor: Colors.blue,
+              iconColor: Colors.grey,
+              iconColorSelected: Colors.blue,
+              backspaceColor: Colors.blue,
+              skinToneDialogBgColor: Colors.white,
+              skinToneIndicatorColor: Colors.grey,
+              enableSkinTones: true,
+              recentTabBehavior: RecentTabBehavior.RECENT,
+              recentsLimit: 28,
+              noRecents: const Text(
+                'No Recents',
+                style: TextStyle(fontSize: 20, color: Colors.black26),
+                textAlign: TextAlign.center,
+              ), // Needs to be const Widget
+              loadingIndicator:
+                  const SizedBox.shrink(), // Needs to be const Widget
+              tabIndicatorAnimDuration: kTabScrollDuration,
+              categoryIcons: const CategoryIcons(),
+              buttonMode: ButtonMode.MATERIAL,
+            ),
+          );
+        });
+  }
+
   PreferredSize _buildControls() {
     return PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
@@ -1070,6 +1131,14 @@ class ImagePainterState extends State<ImagePainter> {
                   ),
                   onPressed: () async {
                     _cropImage();
+                  },
+                ),
+                IconButton(
+                  tooltip: textDelegate.emoji,
+                  icon: widget.emojiIcon ??
+                      Icon(Icons.emoji_emotions, color: Colors.white),
+                  onPressed: () {
+                    _openEmojiBottomSheet();
                   },
                 ),
                 IconButton(
@@ -1210,6 +1279,7 @@ class TextDelegate {
   final String undo = "Undo";
   final String done = "Done";
   final String clearAllProgress = "Clear All Progress";
+  final String emoji = "Emoji";
 }
 
 class GradientCircularProgressIndicator extends StatelessWidget {

@@ -127,6 +127,8 @@ class DrawImage extends CustomPainter {
                   _offset[0]!.dy - textPainter.height / 2);
           textPainter.paint(canvas, textOffset);
           break;
+        case PaintMode.emoji:
+          break;
         default:
       }
     }
@@ -249,7 +251,10 @@ enum PaintMode {
   circle,
 
   ///Allows to draw dashed line between two point.
-  dashLine
+  dashLine,
+
+  ///Allows to draw emoji on the image.
+  emoji,
 }
 
 ///[PaintInfo] keeps track of a single unit of shape, whichever selected.
